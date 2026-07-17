@@ -1,0 +1,12 @@
+[package]
+name = "chx"
+version = "0.1.0"
+edition = "2024"
+description = "Chess data processing toolkit — 92 tools for PGN and EPD files"
+license = "MIT"
+repository = "https://github.com/kv/chx"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+thiserror = "2"
+anyhow = "1"

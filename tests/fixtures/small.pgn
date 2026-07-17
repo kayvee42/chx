@@ -1,0 +1,47 @@
+[Event "World Championship"]
+[Site "London"]
+[Date "2024.11.01"]
+[Round "1"]
+[White "Carlsen, Magnus"]
+[Black "Nepomniachtchi, Ian"]
+[WhiteElo "2830"]
+[BlackElo "2795"]
+[Result "1-0"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Ba4 Nf6 5. O-O Be7 6. Re1 b5 7. Bb3 d6 8. c3 O-O 9. h3 Nb8 10. d4 Nbd7 1-0
+
+[Event "World Championship"]
+[Site "London"]
+[Date "2024.11.02"]
+[Round "2"]
+[White "Nepomniachtchi, Ian"]
+[Black "Carlsen, Magnus"]
+[WhiteElo "2795"]
+[BlackElo "2830"]
+[Result "1/2-1/2"]
+
+1. d4 Nf6 2. c4 e6 3. Nf3 d5 4. Nc3 Be7 5. Bf4 O-O 6. e3 c5 7. dxc5 Bxc5 8. Qc2 Nc6 9. a3 Qa5 10. Rd1 Be7 1/2-1/2
+
+[Event "Open Tournament"]
+[Site "Berlin"]
+[Date "2024.06.15"]
+[Round "5"]
+[White "Smith, John"]
+[Black "Doe, Jane"]
+[WhiteElo "2150"]
+[BlackElo "2100"]
+[Result "0-1"]
+
+1. e4 c5 2. Nf3 d6 0-1
+
+[Event "Open Tournament"]
+[Site "Berlin"]
+[Date "2024.06.15"]
+[Round "6"]
+[White "Patel, Raj"]
+[Black "Kim, Min"]
+[WhiteElo "2450"]
+[BlackElo "2380"]
+[Result "*"]
+
+1. d4 d5 2. c4 e6 3. Nc3 Nf6 4. Bg5 Be7 5. e3 O-O 6. Nf3 h6 7. Bh4 b6 8. cxd5 Nxd5 9. Bxe7 Qxe7 10. Nxd5 exd5 11. Rc1 Be6 *
