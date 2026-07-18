@@ -1,5 +1,5 @@
 use std::fmt;
-use crate::core::ChxError;
+use crate::core::ChxssError;
 
 /// The result of a chess game.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -11,13 +11,13 @@ pub enum GameResult {
 }
 
 impl GameResult {
-    pub fn parse(s: &str) -> Result<Self, ChxError> {
+    pub fn parse(s: &str) -> Result<Self, ChxssError> {
         match s.trim() {
             "1-0" => Ok(Self::WhiteWin),
             "0-1" => Ok(Self::BlackWin),
             "1/2-1/2" => Ok(Self::Draw),
             "*" => Ok(Self::Unknown),
-            _ => Err(ChxError::InvalidResult(s.to_string())),
+            _ => Err(ChxssError::InvalidResult(s.to_string())),
         }
     }
 }

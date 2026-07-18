@@ -1,5 +1,5 @@
 use std::io::BufRead;
-use crate::core::{Game, Tag, ChxError};
+use crate::core::{Game, Tag, ChxssError};
 use crate::core::util::bom::strip_bom_str;
 
 enum State {
@@ -35,7 +35,7 @@ impl<R: BufRead> PgnParser<R> {
         }
     }
 
-    fn read_line_raw(&mut self) -> Option<Result<String, ChxError>> {
+    fn read_line_raw(&mut self) -> Option<Result<String, ChxssError>> {
         self.buf.clear();
         match self.reader.read_line(&mut self.buf) {
             Ok(0) => None,
@@ -50,12 +50,12 @@ impl<R: BufRead> PgnParser<R> {
 
                 Some(Ok(line))
             }
-            Err(e) => Some(Err(ChxError::Io(e))),
+            Err(e) => Some(Err(ChxssError::Io(e))),
         }
     }
 
     /// Read the next line, checking the pending buffer first.
-    fn next_line(&mut self) -> Option<Result<String, ChxError>> {
+    fn next_line(&mut self) -> Option<Result<String, ChxssError>> {
         if let Some(line) = self.pending_line.take() {
             return Some(Ok(line));
         }
@@ -64,7 +64,7 @@ impl<R: BufRead> PgnParser<R> {
 }
 
 impl<R: BufRead> Iterator for PgnParser<R> {
-    type Item = Result<Game, ChxError>;
+    type Item = Result<Game, ChxssError>;
 
     fn next(&mut self) -> Option<Self::Item> {
         if self.done {

@@ -1,19 +1,19 @@
 use std::fmt;
-use crate::core::ChxError;
+use crate::core::ChxssError;
 
 /// An Elo rating value (1–5000).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Elo(pub u16);
 
 impl Elo {
-    pub fn parse(s: &str) -> Result<Option<Self>, ChxError> {
+    pub fn parse(s: &str) -> Result<Option<Self>, ChxssError> {
         let s = s.trim().trim_matches('"');
         if s.is_empty() || s == "?" {
             return Ok(None);
         }
         let val: u16 = s
             .parse()
-            .map_err(|_| ChxError::InvalidElo(s.to_string()))?;
+            .map_err(|_| ChxssError::InvalidElo(s.to_string()))?;
         if val == 0 {
             Ok(None)
         } else {
