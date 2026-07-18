@@ -1,8 +1,8 @@
 # chxss
 
-Chess data processing toolkit — Rust port of Norman Pollock's [40H](https://nk-qy.info/40h/) suite.
+Norm Pollock's 40H chess tools ([nk-qy.info/40h](https://nk-qy.info/40h/)) — 92 command-line utilities for processing PGN and EPD files, built over many years for the chess community.
 
-One binary, 92 tools. PGN and EPD processing on Windows, macOS, and Linux.
+This Rust port brings them to Windows, macOS, and Linux as a single binary. It isn't officially endorsed by Norm — I didn't ask. I'm keeping it compatible, but small differences may exist. Treat it as a community port.
 
 ## Current status
 
