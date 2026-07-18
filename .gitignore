@@ -1,1 +1,5 @@
 /target
+40H-ref/
+.claude/
+*.pgn
+.DS_Store

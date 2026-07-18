@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 description = "Chess data processing toolkit: tools for PGN and EPD files"
 license = "MIT"
-repository = "https://github.com/kayvee42/chx"
+repository = "https://github.com/kayvee42/chxss"
 
 [dependencies]
 clap = { version = "4", features = ["derive"] }

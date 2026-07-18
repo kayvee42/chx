@@ -16,10 +16,12 @@ pub fn write_game(writer: &mut impl Write, game: &Game) -> io::Result<()> {
         }
         write!(writer, "{}", line)?;
     }
-    // Ensure trailing newline
+    // Ensure trailing newline after movetext
     if !game.movetext.is_empty() {
         writeln!(writer)?;
     }
+    // PGN spec: blank line separates consecutive games
+    writeln!(writer)?;
 
     Ok(())
 }

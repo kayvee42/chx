@@ -31,21 +31,55 @@ fn main() -> Result<()> {
     let mut writer = io::open_output(cli.output.as_deref())?;
 
     match cli.command {
-        Command::MinElo { min, max } => {
+        Command::MinElo { vals } => {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
-            let filtered = chxss::tools::pgn::filter::min_elo(games, min, max);
+            let filtered = chxss::tools::pgn::filter::min_elo(games, &vals);
             for game in filtered {
                 let game = game?;
                 write_game(&mut writer, &game)?;
             }
         }
-        Command::MinPly { min } => {
+        Command::EloCheck => {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
-            let filtered = chxss::tools::pgn::filter::min_ply(games, min);
+            let filtered = chxss::tools::pgn::filter::elo_check(games);
             for game in filtered {
                 let game = game?;
                 write_game(&mut writer, &game)?;
             }
+        }
+        Command::TagOrder => {
+            let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
+            for game in games {
+                let mut game = game?;
+                chxss::tools::pgn::filter::tag_order(&mut game);
+                write_game(&mut writer, &game)?;
+            }
+        }
+        Command::TagNull { tag } => {
+            if tag == "FEN" {
+                anyhow::bail!("\"FEN\" values cannot be changed.");
+            }
+            let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
+            let mut changes = 0usize;
+            for game in games {
+                let mut game = game?;
+                changes += chxss::tools::pgn::filter::tag_null(&mut game, &tag);
+                write_game(&mut writer, &game)?;
+            }
+            eprintln!("Number of changes to default is {changes}");
+        }
+        Command::TagRemove { tag } => {
+            if tag == "Event" || tag == "FEN" {
+                anyhow::bail!("\"{tag}\" tags cannot be removed.");
+            }
+            let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
+            let mut removed = 0usize;
+            for game in games {
+                let mut game = game?;
+                removed += chxss::tools::pgn::filter::tag_remove(&mut game, &tag);
+                write_game(&mut writer, &game)?;
+            }
+            eprintln!("Number of tags removed is {removed}");
         }
     }
 
