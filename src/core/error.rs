@@ -16,6 +16,9 @@ pub enum ChxssError {
 
     #[error("missing required tag '{0}' in game at line {1}")]
     MissingTag(String, usize),
+
+    #[error("invalid argument: {0}")]
+    InvalidArgument(String),
 }
 
 #[derive(Error, Debug)]

@@ -6,7 +6,8 @@ use crate::core::Game;
 /// Tags are written in order, followed by a blank line, then the movetext.
 pub fn write_game(writer: &mut impl Write, game: &Game) -> io::Result<()> {
     for tag in &game.tags {
-        writeln!(writer, "[{} \"{}\"]", tag.name, tag.value)?;
+        let escaped = tag.value.replace('"', "\\\"");
+        writeln!(writer, "[{} \"{}\"]", tag.name, escaped)?;
     }
     writeln!(writer)?;
 
@@ -52,5 +53,17 @@ mod tests {
 
         assert!(text.contains("[Event \"Test\"]"));
         assert!(text.contains("1. e4 e5 2. Nf3 Nc6 1-0"));
+    }
+
+    #[test]
+    fn test_quote_escaping() {
+        let game = Game {
+            tags: vec![Tag::new("Event", "Tournament \"A\"")],
+            movetext: vec!["1. e4 *".to_string()],
+        };
+        let mut output = Vec::new();
+        write_game(&mut output, &game).unwrap();
+        let text = String::from_utf8(output).unwrap();
+        assert!(text.contains(r#"[Event "Tournament \"A\""]"#));
     }
 }

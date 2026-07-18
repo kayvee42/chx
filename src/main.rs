@@ -30,29 +30,38 @@ fn main() -> Result<()> {
 
     let mut writer = io::open_output(cli.output.as_deref())?;
 
+    let mut errors = 0usize;
     match cli.command {
         Command::MinElo { vals } => {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
-            let filtered = chxss::tools::pgn::filter::min_elo(games, &vals);
+            let filtered = chxss::tools::pgn::filter::min_elo(games, &vals)?;
             for game in filtered {
-                let game = game?;
-                write_game(&mut writer, &game)?;
+                match game {
+                    Ok(game) => { write_game(&mut writer, &game)?; }
+                    Err(e) => { eprintln!("warning: {e}"); errors += 1; }
+                }
             }
         }
         Command::EloCheck => {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
             let filtered = chxss::tools::pgn::filter::elo_check(games);
             for game in filtered {
-                let game = game?;
-                write_game(&mut writer, &game)?;
+                match game {
+                    Ok(game) => { write_game(&mut writer, &game)?; }
+                    Err(e) => { eprintln!("warning: {e}"); errors += 1; }
+                }
             }
         }
         Command::TagOrder => {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
             for game in games {
-                let mut game = game?;
-                chxss::tools::pgn::filter::tag_order(&mut game);
-                write_game(&mut writer, &game)?;
+                match game {
+                    Ok(mut game) => {
+                        chxss::tools::pgn::filter::tag_order(&mut game);
+                        write_game(&mut writer, &game)?;
+                    }
+                    Err(e) => { eprintln!("warning: {e}"); errors += 1; }
+                }
             }
         }
         Command::TagNull { tag } => {
@@ -62,9 +71,13 @@ fn main() -> Result<()> {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
             let mut changes = 0usize;
             for game in games {
-                let mut game = game?;
-                changes += chxss::tools::pgn::filter::tag_null(&mut game, &tag);
-                write_game(&mut writer, &game)?;
+                match game {
+                    Ok(mut game) => {
+                        changes += chxss::tools::pgn::filter::tag_null(&mut game, &tag)?;
+                        write_game(&mut writer, &game)?;
+                    }
+                    Err(e) => { eprintln!("warning: {e}"); errors += 1; }
+                }
             }
             eprintln!("Number of changes to default is {changes}");
         }
@@ -75,12 +88,19 @@ fn main() -> Result<()> {
             let games = PgnParser::new(buf_reader).collect::<Vec<_>>();
             let mut removed = 0usize;
             for game in games {
-                let mut game = game?;
-                removed += chxss::tools::pgn::filter::tag_remove(&mut game, &tag);
-                write_game(&mut writer, &game)?;
+                match game {
+                    Ok(mut game) => {
+                        removed += chxss::tools::pgn::filter::tag_remove(&mut game, &tag);
+                        write_game(&mut writer, &game)?;
+                    }
+                    Err(e) => { eprintln!("warning: {e}"); errors += 1; }
+                }
             }
             eprintln!("Number of tags removed is {removed}");
         }
+    }
+    if errors > 0 {
+        eprintln!("{errors} game(s) skipped due to parse errors");
     }
 
     Ok(())
